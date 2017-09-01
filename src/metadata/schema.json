@@ -185,14 +185,14 @@
                     "name": "progress",
                     "type": "String",
                     "info": "The user's progress, as a floating-point number between 0.0 and 1.0, defined as the top edge of the user's current viewport, expressed as a percentage of the article's total length.",
-                    "required": false
+                    "required": true
                 },
                 {
                     "name": "progressTimestamp",
                     "vendorName": "progress_timestamp",
                     "type": "DatePicker",
                     "info": "The Unix timestamp value of the time that the progress was recorded.",
-                    "required": false
+                    "required": true
                 }
             ],
             "url": "https:\/\/www.instapaper.com\/api\/1\/bookmarks\/update_read_progress",

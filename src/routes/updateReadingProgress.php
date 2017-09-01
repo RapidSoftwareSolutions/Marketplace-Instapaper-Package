@@ -18,12 +18,12 @@ $app->post('/api/Instapaper/updateReadingProgress', function ($request, $respons
        'form_params' => ['bookmark_id','progress','progress_timestamp']
     ];
 
+    $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);
 
     if(!empty($data['progress_timestamp'])){
         $data['progress_timestamp'] = strtotime($data['progress_timestamp']);
     }
 
-    $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);
     $query_str = "https://www.instapaper.com/api/1/bookmarks/update_read_progress";
 
     $requestParams = \Models\Params::createRequestBody($data, $bodyParams);
