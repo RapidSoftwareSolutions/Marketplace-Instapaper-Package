@@ -40,8 +40,8 @@ $app->post('/api/Instapaper/getAccessToken', function ($request, $response) {
             ]
         );
         $responseBody = $resp->getBody()->getContents();
-        $responseObject[] = explode("&",$responseBody)[0];
-        $responseObject[] = explode("&",$responseBody)[1];
+        $responseObject["token_secret"] = explode("=",explode("&",$responseBody)[0])[1];
+        $responseObject["token"] = explode("=",explode("&",$responseBody)[1])[1];
         $responseBody = $responseObject;
 
         if(in_array($resp->getStatusCode(), ['200', '201', '202', '203', '204'])) {
