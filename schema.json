@@ -1,0 +1,1146 @@
+{
+  "package": "Instapaper",
+  "tagline": "Instapaper API",
+  "description": "Instapaper is the best way to save and read web content. ",
+  "image": "https://logo.clearbit.com/instapaper.com",
+  "repo": "https://github.com/RapidSoftwareSolutions/Marketplace-Instapaper-Package",
+  "keywords": [
+    "API",
+    "instapaper"
+  ],
+  "accounts": {
+    "domain": "http://www.instapaper.com",
+    "credentials": [
+      "customerKey",
+      "customerSecret"
+    ]
+  },
+  "blocks": [
+    {
+      "name": "getAccessToken",
+      "description": "Gets an OAuth access token for a user.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "username",
+          "type": "String",
+          "info": "The user's username.",
+          "required": true
+        },
+        {
+          "name": "password",
+          "type": "String",
+          "info": "The user's password, if the account has one.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/oauth/access_token",
+      "request": {
+        "method": "post"
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "getUnreadBookmarks",
+      "description": "Lists the user's unread bookmarks, and can also synchronize reading positions.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "limit",
+          "type": "Number",
+          "info": "A number between 1 and 500, default 25.",
+          "required": false
+        },
+        {
+          "name": "folderId",
+          "vendorName":"folder_id",
+          "type": "String",
+          "info": "Possible values are unread (default), starred, archive, or a folder_id value from /api/1.1/folders/list.",
+          "required": false
+        },
+        {
+          "name": "have",
+          "type": "String",
+          "info": "A concatenation of bookmark_id values that the client already has from the specified folder. See below.",
+          "required": false
+        },
+        {
+          "name": "highlights",
+          "type": "String",
+          "info": "Optional. A '-' delimited list of highlight IDs that the client already has from the specified bookmarks.",
+          "required": false
+        }
+      ],
+      "url": "https://www.onenote.com/api/v1.0/me/notes/pages",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["limit","folderId","have","highlights"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "updateReadingProgress",
+      "description": "Updates the user's reading progress on a single article.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "vendorName": "bookmark_id",
+          "type": "String",
+          "info": "The bookmark to update.",
+          "required": true
+        },
+        {
+          "name": "progress",
+          "type": "String",
+          "info": "The user's progress, as a floating-point number between 0.0 and 1.0, defined as the top edge of the user's current viewport, expressed as a percentage of the article's total length.",
+          "required": false
+        },
+        {
+          "name": "progressTimestamp",
+          "vendorName":"progress_timestamp",
+          "type": "toFormat:timestamp",
+          "info": "The Unix timestamp value of the time that the progress was recorded.",
+          "required": false
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/bookmarks/update_read_progress",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["bookmark_id","progress","progress_timestamp"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "addBookmark",
+      "description": "Adds a new unread bookmark to the user's account.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "url",
+          "type": "String",
+          "info": "The bookmark url.",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "info": "If omitted or empty, the title will be looked up by Instapaper synchronously. This will delay the action, so please specify the title if you have it.",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "info": "A brief, plaintext description or summary of the article. Twitter clients often put the source tweet's text here, and Instapaper's bookmarklet puts the selected text here if the user has selected any.",
+          "required": false
+        },
+        {
+          "name": "folderId",
+          "vendorName":"folder_id",
+          "type": "String",
+          "info": "Folder ID as returned by the folders/list method described below.",
+          "required": false
+        },
+        {
+          "name": "resolveFinalUrl",
+          "vendorName":"resolve_final_url",
+          "type": "Select",
+          "options": ["0","1"],
+          "info": "Specify 1 if the url might not be the final URL that a browser would resolve when fetching it, such as if it's a shortened URL, it's a URL from an RSS feed that might be proxied, or it's likely to go through any other redirection when viewed in a browser. This will cause Instapaper to attempt to resolve all redirects itself, synchronously. This will delay the action, so please specify 0 for this parameter if you're reasonably confident that this URL won't be redirected, such as if it's already being viewed in a web browser.",
+          "required": false
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/bookmarks/add",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["url","title","description","folder_id","resolve_final_url"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "deleteBookmark",
+      "description": "Permanently deletes the specified bookmark. This is NOT the same as Archive. Please be clear to users if you're going to do this.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "vendorName": "bookmark_id",
+          "type": "String",
+          "info": "The bookmark url.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/bookmarks/delete",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["bookmark_id"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "starsBookmark",
+      "description": "Stars the specified bookmark.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "vendorName": "bookmark_id",
+          "type": "String",
+          "info": "The bookmark url.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/bookmarks/star",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["bookmark_id"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "unstarsBookmark",
+      "description": "Un-stars the specified bookmark.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "vendorName": "bookmark_id",
+          "type": "String",
+          "info": "The bookmark url.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/bookmarks/unstar",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["bookmark_id"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "archiveBookmark",
+      "description": "Moves the specified bookmark to the Archive.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "vendorName": "bookmark_id",
+          "type": "String",
+          "info": "The bookmark url.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/bookmarks/archive",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["bookmark_id"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "unarchiveBookmark",
+      "description": "Moves the specified bookmark to the top of the Unread folder.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "vendorName": "bookmark_id",
+          "type": "String",
+          "info": "The bookmark url.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/bookmarks/unarchive",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["bookmark_id"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "moveBookmark",
+      "description": "Moves the specified bookmark to a user-created folder.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "vendorName": "bookmark_id",
+          "type": "String",
+          "info": "The bookmark url.",
+          "required": true
+        },
+        {
+          "name": "folderId",
+          "vendorName": "folder_id",
+          "type": "String",
+          "info": "Folder id.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/bookmarks/move",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["bookmark_id","folder_id"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "getBookmarkText",
+      "description": "Returns the specified bookmark's processed text-view HTML, which is always text/html encoded as UTF-8.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "vendorName": "bookmark_id",
+          "type": "String",
+          "info": "The bookmark url.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/bookmarks/get_text",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["bookmark_id"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "getAllFolders",
+      "description": "A list of the account's user-created folders. This only includes organizational folders and does not include RSS-feed folders or starred-subscription folders, as the implementation of those is changing in the near future.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/folders/list",
+      "request": {
+        "method": "post",
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "createFolder",
+      "description": "Creates an organizational folder.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "info": "Folder name.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/folders/add",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["title"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "deleteFolder",
+      "description": "Deletes the folder and moves any articles in it to the Archive.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "folderId",
+          "vendorName":"folder_id",
+          "type": "String",
+          "info": "Folder id.",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/folders/delete",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["folder_id"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "orderFolder",
+      "description": "Re-orders a user's folders.",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "order",
+          "type": "List:commaString",
+          "info": "folder_id:position pairs list",
+          "required": true,
+          "structure": {
+            "name": "pair",
+            "type": "String",
+            "info": "folder_id:position. Example: 100:1"
+          }
+        }
+      ],
+      "url": "https://www.onenote.com/api/1/folders/set_order",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["order"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "getBookmarkHighlights",
+      "description": "List highlights for bookmarkId",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "type": "String",
+          "info": "Bookmark id",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1.1/bookmarks/{$data['bookmarkId']}/highlight",
+      "request": {
+        "method": "post",
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "createBookmarkHighlight",
+      "description": "Create a new highlight for bookmarkId",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "bookmarkId",
+          "type": "String",
+          "info": "Bookmark id",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "String",
+          "info": "The text for the highlight.",
+          "required": true
+        },
+        {
+          "name": "position",
+          "type": "Number",
+          "info": "The 0-indexed position of text in the content. Defaults to 0.",
+          "required": false
+        }
+      ],
+      "url": "https://www.onenote.com/api/1.1/bookmarks/{$data['bookmarkId']}/highlight",
+      "request": {
+        "method": "post",
+        "params":
+        [
+          {
+            "paramsType": "form_params",
+            "bodyParams": ["text","position"]
+          }
+        ],
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    },
+    {
+      "name": "deleteBookmarkHighlight",
+      "description": "Delete a highlight",
+      "args": [
+        {
+          "name": "customerKey",
+          "type": "credentials",
+          "info": "Your customer key.",
+          "required": true
+        },
+        {
+          "name": "customerSecret",
+          "type": "credentials",
+          "info": "Your customer secret.",
+          "required": true
+        },
+        {
+          "name": "token",
+          "type": "String",
+          "info": "Your OAUth 1 token.",
+          "required": true
+        },
+        {
+          "name": "tokenSecret",
+          "type": "String",
+          "info": "Your OAUth 1 token secret.",
+          "required": true
+        },
+        {
+          "name": "highlightId",
+          "type": "String",
+          "info": "Highlight id",
+          "required": true
+        }
+      ],
+      "url": "https://www.onenote.com/api/1.1/highlights/{$data['highlightId']}/delete",
+      "request": {
+        "method": "post",
+        "oauth1" : {
+          "ck" : "{$data['customerKey']}",
+          "cs" : "{$data['customerSecret']}",
+          "token": "{$data['token']}",
+          "tokenSecret": "{$data['tokenSecret']}"
+        }
+      },
+      "callbacks": [{
+        "name": "error",
+        "info": "Error"
+      }, {
+        "name": "success",
+        "info": "Success"
+      }]
+    }
+  ]
+}
